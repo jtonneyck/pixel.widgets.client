@@ -4,7 +4,7 @@ import { gql } from 'apollo-boost';
 import _ from "lodash";
 import {groupByCountry, groupByType, groupBeers} from "../utils/filterFunctions";
 import PropTypes from 'prop-types';
-import {BeerTile, Loading, Grouping} from "./";
+import {BeerTile, Loading, Grouping, Filters} from "./";
 import Grid from "../layout/Grid";
 import "./searchResults.scss";
 import uniqid from 'uniqid';
@@ -32,6 +32,13 @@ const SEARCH_RESULTS = gql`
                     medium
                     large
                 }
+            }
+            filters {
+                countries {
+                    isoCode
+                    name
+                }
+                regions
             }
             hasMore
             page
@@ -63,7 +70,7 @@ const SearchResults = ({searchTerm, setLoading}) => {
     }
     else setLoading(false);
     if (error) return <p>Error :(</p>;
-        
+    debugger
     return (
         <div className="search-results">
             <Grouping 
@@ -71,7 +78,7 @@ const SearchResults = ({searchTerm, setLoading}) => {
                 setGrouping={setGrouping} 
                 grouping={grouping}
             />
-
+            <Filters filters={data.searchBeer.filters} />
             {
                 data && grouping === "NO_GROUPING" &&
                 <Grid>

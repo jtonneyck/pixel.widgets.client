@@ -3,3 +3,4 @@ export {default as SearchResults} from "./SearchResults";
 export {default as BeerTile} from "./BeerTile";
 export {default as Loading} from "./Loading";
 export {default as Grouping} from "./Grouping";
+export {default as Filters} from "./Filters";

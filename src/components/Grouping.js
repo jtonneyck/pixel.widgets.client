@@ -14,22 +14,22 @@ const Grouping = ({setGrouping, grouping, setBeers}) => {
                 }} type="radio" checked={grouping === "NO_GROUPING"} id="no-grouping" name="grouping"/>
                 <span>no grouping</span>
             </label>
-            <label for="bytype" class="radio">
+            <label for="bytype" className="radio">
                 <input onChange={()=> {
                     setGrouping("BY_TYPE");
                 }} type="radio" id="bytype" checked={grouping === "BY_TYPE"} name="grouping"/>
                 <span>type</span>
             </label>
-            <label for="bycountry" class="radio">
+            <label for="bycountry" className="radio">
                 <input onChange={()=> {
                     setGrouping("BY_COUNTRY");
-                }} type="radio" id="bycountry" Checked={grouping === "BY_COUNTRY"} name="grouping"/>
+                }} type="radio" id="bycountry" checked={grouping === "BY_COUNTRY"} name="grouping"/>
                 <span>country</span>
             </label>
-            <label for="byregion" class="radio">
+            <label for="byregion" className="radio">
                 <input onChange={()=> {
                     setGrouping("BY_REGION");
-                }} type="radio" id="byregion" Checked={grouping === "BY_REGION"} name="grouping"/>
+                }} type="radio" id="byregion" checked={grouping === "BY_REGION"} name="grouping"/>
                 <span>region</span>
             </label>
         </div>
