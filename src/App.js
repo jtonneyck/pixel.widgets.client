@@ -14,7 +14,7 @@ function App() {
   return (
       <ApolloProvider client={client}>
         <div>
-          <h2>My first Apollo app 🚀</h2>
+          <h2>Beer app 🚀</h2>
         </div>
         <Search />
       </ApolloProvider>

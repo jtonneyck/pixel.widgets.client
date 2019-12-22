@@ -3,26 +3,32 @@ import { useQuery } from '@apollo/react-hooks';
 import { gql } from 'apollo-boost';
 import _ from "lodash";
 
-const SEARCH_RESULTS = gql`{
-        searchBeer(searchTerm: ""){
-            id
-            name
-            breweries {
-                locations{
-                    countryIsoCode
-                }
+const SEARCH_RESULTS = gql`
+    query SearchBeer($page: Int, $searchTerm: String){
+        searchBeer(searchTerm: $searchTerm, page: $page){
+            beers {
+                id
+                name
             }
+            hasMore
+            page
         }
     }
 `
 const SearchResults = ({searchTerm}) => {
-    const {loading, error, data} = useQuery(SEARCH_RESULTS);
+    const {loading, error, data, fetchMore} = useQuery(SEARCH_RESULTS,{
+        variables: {
+            page: 1, 
+            searchTerm
+        }
+    });
+
     const [filters, setFilter] = useState({byType: false, byLocation:false});
     const [groupings, setGrouping] = useState({byType: false, byLocation: false});
 
     if (loading) return <p>Loading...</p>;
     if (error) return <p>Error :(</p>;
-    const beersByCountry = _.groupBy(data.searchBeer, (beer)=>beer.breweries[0].locations[0].countryIsoCode);    
+    
     return (
         <div>
             <input onChange={()=> {
@@ -34,23 +40,30 @@ const SearchResults = ({searchTerm}) => {
             <label for="location">group by location</label>
 
             {data && !groupings.byLocation &&
-                data.searchBeer.map((beer)=> <h1>{beer.name}</h1>)
+                data.searchBeer.beers.map((beer)=> <h1 key={beer.id}>{beer.name}</h1>)
             }
-            {
-            data && groupings.byLocation &&
-                Object.keys(
-                    beersByCountry
-                )
-                .map((countryIso)=> (
-                    <>
-                    <h1>{countryIso}</h1>
-                    <ul>
-                        {beersByCountry[countryIso].map((beer)=> 
-                            <p>{beer.name}</p>
-                        )}
-                    </ul>
-                    </>
-                ))
+
+            {data.searchBeer.hasMore &&
+            <button onClick={()=> {
+              fetchMore({
+                variables: {
+                  page: data.searchBeer.page + 1
+                },
+                updateQuery: (prev, {fetchMoreResult, ...rest})=> {
+                  if(!fetchMoreResult) return prev;
+                  let mergedBeers = [...prev.searchBeer.beers, ...fetchMoreResult.searchBeer.beers];
+                  return {
+                    searchBeer: {
+                        ...fetchMoreResult.searchBeer,
+                        beers: mergedBeers
+                    }
+                  }
+                }
+              })}
+            }
+            >
+              Load more
+            </button>
             }
         </div>
     );
