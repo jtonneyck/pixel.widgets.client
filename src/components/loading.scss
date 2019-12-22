@@ -1,0 +1,18 @@
+.loading {
+    height: 100%;    
+    .is-loading {
+        animation: loading-spin infinite 5s linear;
+    }
+    img {
+        height: 84px;
+    }
+}
+
+@keyframes loading-spin {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+}

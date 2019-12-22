@@ -1,0 +1,17 @@
+.beer-tile {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    flex: nowrap;
+    height: 25vh;
+    width: 100%;
+    padding: 5%;
+    img {
+        width: 50%;
+    }
+    h1 {
+        font-size: 18px;
+        text-align: center;
+    }
+}

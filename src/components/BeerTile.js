@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import "./beerTile.scss";
 
 const BeerTile = ({beer: {images, name}, ...props}) => {
-    debugger
     return (
-        <div>
+        <div className="beer-tile">
             <h1>{name}</h1>
             <img src={images.medium} alt=""/>
         </div>

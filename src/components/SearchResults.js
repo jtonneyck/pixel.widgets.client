@@ -1,19 +1,25 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import { useQuery } from '@apollo/react-hooks';
 import { gql } from 'apollo-boost';
 import _ from "lodash";
-import {groupByCountry} from "../utils/filterFunctions";
+import {groupByCountry, groupByType, groupBeers} from "../utils/filterFunctions";
 import PropTypes from 'prop-types';
-import {BeerTile} from "./";
+import {BeerTile, Loading, Grouping} from "./";
+import Grid from "../layout/Grid";
+import "./searchResults.scss";
 
 const SEARCH_RESULTS = gql`
     query SearchBeer($page: Int, $searchTerm: String){
         searchBeer(searchTerm: $searchTerm, page: $page){
             beers {
                 id
-                name,
+                name
+                type {
+                    category
+                }
                 breweries {
                     locations {
+                        region
                         country {
                             isoCode
                             name
@@ -33,77 +39,89 @@ const SEARCH_RESULTS = gql`
     }
 `
 
-const SearchResults = ({searchTerm}) => {
-    const {loading, error, data, fetchMore} = useQuery(SEARCH_RESULTS,{
+const SearchResults = ({searchTerm, setLoading}) => {
+    const {loading, error, data, fetchMore, networkStatus} = useQuery(SEARCH_RESULTS,{
         variables: {
             page: 1, 
-            searchTerm
-        }
+            searchTerm,
+        },
+        notifyOnNetworkStatusChange: true
     });
-    const [beers, setBeers] = useState({beers: data});
+    
+    const [beers, setBeers] = useState({beers: []});
     const [filters, setFilter] = useState({byType: false, byLocation:false});
-    const [groupings, setGrouping] = useState({byType: false, byLocation: false});
+    const [grouping, setGrouping] = useState("NO_GROUPING");
 
-    if (loading) return <p>Loading...</p>;
+    useEffect(()=> {
+        if(data) setBeers(groupBeers(data.searchBeer.beers, grouping));
+    }, [grouping, loading])
+    {/* 3 means fetching more data !3 applies to first load */}
+    if(loading && networkStatus !== 3) {
+        setLoading(true);
+        return <p>Loading...</p>
+    }
+    else setLoading(false);
     if (error) return <p>Error :(</p>;
-    debugger
+        
     return (
-        <div>
-            <input onChange={()=> {
-                setGrouping({
-                    ...groupings,
-                    byLocation: !groupings.byLocation
-                });
-
-                setBeers(groupByCountry(data.searchBeer.beers));
-            }} type="checkbox" id="location" name="location"/>
-
-            <label for="location">group by location</label>
+        <div className="search-results">
+            <Grouping 
+                setBeers={setBeers} 
+                setGrouping={setGrouping} 
+                grouping={grouping}
+            />
 
             {
-                data && !groupings.byLocation &&
-                    data.searchBeer.beers.map((beer)=> <h1 key={beer.id}>{beer.name}</h1>)
+                data && grouping === "NO_GROUPING" &&
+                <Grid>
+                    {data.searchBeer.beers.map((beer)=> <BeerTile key={beer.id} beer={beer}/>)}
+                </Grid>
             }
 
             {
-                data && groupings.byLocation && Object.keys(beers).map((countryKey)=> (
-                <>    
-                    <h1>{countryKey}</h1>
-                    <ul>
-                        {beers[countryKey].map((beer)=> <BeerTile key={beer.id} beer={beer}/>)}
-                    </ul>
-                </>
-                ))
+                data && grouping !== "NO_GROUPING" && !Array.isArray(beers) &&
+                    Object.keys(beers).map((groupKey)=> (
+                        <>
+                            <h1>{groupKey}</h1>
+                            <Grid>
+                                {beers[groupKey].map((beer)=> <BeerTile key={beer.id} beer={beer}/>)}
+                            </Grid>
+                        </>
+                    ))
             }
-
-            {data.searchBeer.hasMore &&
-                <button onClick={()=> {
-                    fetchMore({
-                        variables: {
-                        page: data.searchBeer.page + 1
-                        },
-                        updateQuery: (prev, {fetchMoreResult, ...rest})=> {
-                        if(!fetchMoreResult) return prev;
-                        let mergedBeers = [...prev.searchBeer.beers, ...fetchMoreResult.searchBeer.beers];
-                        return {
-                            searchBeer: {
-                                ...fetchMoreResult.searchBeer,
-                                beers: mergedBeers
+            <div className="fetch-more-container">
+            {/* 3 means fetching more data */}
+            {networkStatus === 3? <Loading loading={true} />:
+                data.searchBeer.hasMore &&
+                    <button onClick={()=> {
+                        fetchMore({
+                            variables: {
+                            page: data.searchBeer.page + 1
+                            },
+                            updateQuery: (prev, {fetchMoreResult, ...rest})=> {
+                            if(!fetchMoreResult) return prev;
+                            let mergedBeers = [...prev.searchBeer.beers, ...fetchMoreResult.searchBeer.beers];
+                            return {
+                                searchBeer: {
+                                    ...fetchMoreResult.searchBeer,
+                                    beers: mergedBeers
+                                }
                             }
+                            }
+                        })}
                         }
-                        }
-                    })}
-                    }
-                >
-                Load more
-                </button>
+                    >
+                    Load more
+                    </button>
             }
+            </div>
         </div>
     );
 }
 
 SearchResults.propTypes = {
-    searchTerm: PropTypes.string
+    searchTerm: PropTypes.string,
+    setLoading: PropTypes.func.isRequired
 };
 
 export default SearchResults;

@@ -1,0 +1,14 @@
+.search-results {
+    width: 100%;
+    .fetch-more-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    button {
+        width: 40%;
+        height: 48px;
+        font-size: 18px;
+    }
+    margin-bottom: 84px;
+}

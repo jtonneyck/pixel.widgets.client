@@ -1,6 +1,6 @@
 import React from 'react';
 import logo from './logo.svg';
-import './App.css';
+import './App.scss';
 import ApolloClient from 'apollo-boost';
 import { gql } from "apollo-boost";
 import { ApolloProvider } from '@apollo/react-hooks';
@@ -13,9 +13,6 @@ const client = new ApolloClient({
 function App() {
   return (
       <ApolloProvider client={client}>
-        <div>
-          <h2>Beer app 🚀</h2>
-        </div>
         <Search />
       </ApolloProvider>
     );
