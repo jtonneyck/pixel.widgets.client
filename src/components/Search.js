@@ -17,7 +17,7 @@ export default function(){
         <Fragment>
             <div className="search">
                 <div className="title">
-                    <h1>Beer app </h1>
+                    <h1>BEER APP </h1>
                     <Loading loading={loading}/>
                 </div>
                 <input type="text" 

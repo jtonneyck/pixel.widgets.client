@@ -66,7 +66,6 @@ export const groupByRegion = (beers)=> {
             .value();
     })
     .value()
-    debugger
     /* now group by region */
     return _.groupBy(locations,(beer)=>beer.brewery.location.region);
 }
@@ -74,5 +73,3 @@ export const groupByRegion = (beers)=> {
 export const groupByType = (beers)=> {
     return _.groupBy(beers, (beer)=>beer.type.category);
 }
-
-// export const groupByCoordinate = (beers)

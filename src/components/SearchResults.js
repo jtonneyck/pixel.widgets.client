@@ -7,6 +7,7 @@ import PropTypes from 'prop-types';
 import {BeerTile, Loading, Grouping} from "./";
 import Grid from "../layout/Grid";
 import "./searchResults.scss";
+import uniqid from 'uniqid';
 
 const SEARCH_RESULTS = gql`
     query SearchBeer($page: Int, $searchTerm: String){
@@ -58,7 +59,7 @@ const SearchResults = ({searchTerm, setLoading}) => {
     {/* 3 means fetching more data !3 applies to first load */}
     if(loading && networkStatus !== 3) {
         setLoading(true);
-        return <p>Loading...</p>
+        return <></>
     }
     else setLoading(false);
     if (error) return <p>Error :(</p>;
@@ -74,7 +75,7 @@ const SearchResults = ({searchTerm, setLoading}) => {
             {
                 data && grouping === "NO_GROUPING" &&
                 <Grid>
-                    {data.searchBeer.beers.map((beer)=> <BeerTile key={beer.id} beer={beer}/>)}
+                    {data.searchBeer.beers.map((beer)=> <BeerTile key={uniqid()} beer={beer}/>)}
                 </Grid>
             }
 
@@ -84,7 +85,7 @@ const SearchResults = ({searchTerm, setLoading}) => {
                         <>
                             <h1>{groupKey}</h1>
                             <Grid>
-                                {beers[groupKey].map((beer)=> <BeerTile key={beer.id} beer={beer}/>)}
+                                {beers[groupKey].map((beer)=> <BeerTile key={uniqid()} beer={beer}/>)}
                             </Grid>
                         </>
                     ))

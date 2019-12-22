@@ -3,3 +3,10 @@
     grid-template-columns: 25% 25% 25% 25%;
     padding: 5%;
 }
+
+@media only screen and (max-width: 767px) {
+    /* phones */
+    .grid {
+        grid-template-columns: 50% 50%;
+    }
+}

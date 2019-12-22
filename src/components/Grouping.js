@@ -6,7 +6,7 @@ const Grouping = ({setGrouping, grouping, setBeers}) => {
 
     return (
     <div className="grouping">
-        <h1>Group by:</h1>
+        <h1>Group By:</h1>
         <div className="control-group">
             <label for="no-grouping" className="radio">
                 <input onChange={()=> {
@@ -18,19 +18,19 @@ const Grouping = ({setGrouping, grouping, setBeers}) => {
                 <input onChange={()=> {
                     setGrouping("BY_TYPE");
                 }} type="radio" id="bytype" checked={grouping === "BY_TYPE"} name="grouping"/>
-                <span>group by type</span>
+                <span>type</span>
             </label>
             <label for="bycountry" class="radio">
                 <input onChange={()=> {
                     setGrouping("BY_COUNTRY");
                 }} type="radio" id="bycountry" Checked={grouping === "BY_COUNTRY"} name="grouping"/>
-                <span>group by country</span>
+                <span>country</span>
             </label>
             <label for="byregion" class="radio">
                 <input onChange={()=> {
                     setGrouping("BY_REGION");
                 }} type="radio" id="byregion" Checked={grouping === "BY_REGION"} name="grouping"/>
-                <span>group by region</span>
+                <span>region</span>
             </label>
         </div>
     </div>

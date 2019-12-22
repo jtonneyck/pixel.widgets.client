@@ -1,12 +1,13 @@
+
 .grouping {
     $radioSize: 22px;
     $radioBorder: #D1D7E3;
     $radioActive: #5D9BFB;
     .control-group {
-        width: 40%;
+        width: 40vw;
         display: flex;
-        flex-wrap: nowrap;
         margin-left: 20px;
+        flex-wrap: wrap;
     }
     .radio {
         width: 50%;
@@ -73,6 +74,19 @@
                     }
                 }
             }
+        }
+    }
+}
+
+@media only screen and (max-width: 767px) {
+    /* phones */
+    .grouping {
+
+        .control-group {
+            width: 100vw;
+        }
+        .radio {
+            width: 50%;
         }
     }
 }
