@@ -3,18 +3,9 @@ import PropTypes from 'prop-types';
 import "./filters.scss";
 
 const Filters = ({filters:{countries, regions}}) => {
-    debugger
     return (
         <div className="filters">
-            <div class="container">
-                <ul class="ks-cboxtags">
-                    <li>
-                    <input type="checkbox" id="checkboxOne" value="Rainbow Dash"/>
-                    <label for="checkboxOne">Rainbow Dash</label>
-                    </li>
-                </ul>
-            </div>
-            <div>
+            <div classNamne="filter-group">
                 <h1>Country Filters</h1>
                 <div class="container">
                     <ul class="ks-cboxtags">
@@ -27,7 +18,7 @@ const Filters = ({filters:{countries, regions}}) => {
                     </ul>
                 </div>
             </div>
-            <div>
+            <div  classNamne="filter-group">
                 <h1>Region Filters</h1>
                 <div class="container">
                     <ul class="ks-cboxtags">

@@ -1,6 +1,8 @@
 .filters {
-   
-
+    display: flex;
+    .filter-group {
+        width: 25%;
+    }
     .container {
         max-width: 640px;
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -57,8 +59,8 @@
     }
 
     ul.ks-cboxtags li input[type="checkbox"]:checked + label {
-        border: 2px solid #1bdbf8;
-        background-color: #12bbd4;
+        border: 2px solid blue;
+        background-color:blue;
         color: #fff;
         transition: all .2s;
     }

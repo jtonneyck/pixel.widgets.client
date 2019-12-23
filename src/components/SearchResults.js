@@ -73,12 +73,15 @@ const SearchResults = ({searchTerm, setLoading}) => {
     debugger
     return (
         <div className="search-results">
-            <Grouping 
-                setBeers={setBeers} 
-                setGrouping={setGrouping} 
-                grouping={grouping}
-            />
-            <Filters filters={data.searchBeer.filters} />
+            <div className="control-container">
+                <Grouping 
+                    setBeers={setBeers} 
+                    setGrouping={setGrouping} 
+                    grouping={grouping}
+                />
+                <Filters filters={data.searchBeer.filters} />
+            </div>
+
             {
                 data && grouping === "NO_GROUPING" &&
                 <Grid>

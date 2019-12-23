@@ -1,5 +1,9 @@
 .search-results {
     width: 100%;
+    .control-container {
+        display: flex;
+        flex-wrap: wrap;
+    }
     .fetch-more-container {
         display: flex;
         align-items: center;
