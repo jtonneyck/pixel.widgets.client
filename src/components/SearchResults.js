@@ -70,7 +70,6 @@ const SearchResults = ({searchTerm, setLoading}) => {
     }
     else setLoading(false);
     if (error) return <p>Error :(</p>;
-    debugger
     return (
         <div className="search-results">
             <div className="control-container">
